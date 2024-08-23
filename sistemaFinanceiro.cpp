@@ -10,10 +10,9 @@ struct Pessoa
     string nome;
     string sobrenome;
     double valor;
-    
 };
 
-int main()
+void criaPessoa()
 {
     char respostaCadastro, respostaDeposito;
     vector<Pessoa> pessoas;
@@ -38,16 +37,39 @@ int main()
             cin >> pessoa.valor;
             cout << endl;
         }
-        pessoas.push_back(pessoa);//coloca a pessoa no final do vetor
+        pessoas.push_back(pessoa); // coloca a pessoa no final do vetor
 
-        for(int i = 0; i < pessoas.size(); i++){
-            cout << "nome: " << pessoas[i].nome << " "<< pessoas[i].sobrenome << endl;
+        for (int i = 0; i < pessoas.size(); i++)
+        {
+            cout << "nome: " << pessoas[i].nome << " " << pessoas[i].sobrenome << endl;
             cout << "valor: " << pessoas[i].valor << endl;
         }
         cout << "Deseja cadastrar uma conta?[s/n]" << endl;
         cin >> respostaCadastro;
         cout << endl;
     } while (respostaCadastro == 's' || respostaCadastro == 'S');
+}
 
-    return 0;
+int main()
+{
+    int escolha;
+
+    do
+    {
+        // IR ADICIONANDO AS ESCOLHAS DO MENU
+        cout << "1- criar conta" << endl;
+        cout << "9- Sair" << endl;
+        cin >> escolha;
+
+        switch (escolha)
+        {
+            // DEIXAR 9 LIVRE PARA SER SAIDA
+        case 1:
+            criaPessoa();
+            break;
+
+        default:
+            break;
+        }
+    } while (escolha != 9);
 }
