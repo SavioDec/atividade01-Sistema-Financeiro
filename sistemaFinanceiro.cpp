@@ -12,10 +12,11 @@ struct Pessoa
     double valor;
 };
 
+vector<Pessoa> pessoas;
+
 void criaPessoa()
 {
     char respostaCadastro, respostaDeposito;
-    vector<Pessoa> pessoas;
 
     cout << fixed << setprecision(2);
 
@@ -44,7 +45,7 @@ void criaPessoa()
             cout << "nome: " << pessoas[i].nome << " " << pessoas[i].sobrenome << endl;
             cout << "valor: " << pessoas[i].valor << endl;
         }
-        cout << "Deseja cadastrar uma conta?[s/n]" << endl;
+        cout << "Deseja cadastrar outra conta?[s/n]" << endl;
         cin >> respostaCadastro;
         cout << endl;
     } while (respostaCadastro == 's' || respostaCadastro == 'S');
