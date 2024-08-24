@@ -45,7 +45,7 @@ void criaPessoa()
         }
         pessoas.push_back(pessoa); // coloca a pessoa no final do vetor
 
-        for (int i = 0; i < size(pessoas); i++)
+        for (int i = 0; i < pessoas.size(); i++)
         {
             cout << "nome: " << pessoas[i].nome << endl;
             cout << "valor: " << pessoas[i].valor << endl;
