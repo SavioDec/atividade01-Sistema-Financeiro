@@ -13,6 +13,14 @@ struct Pessoa
 };
 
 vector<Pessoa> pessoas;
+Pessoa pessoa;
+
+void realizaDeposito()
+{
+    cout << "digite o valor do deposito: ";
+    cin >> pessoa.valor;
+    cout << endl;
+}
 
 void criaPessoa()
 {
@@ -22,7 +30,6 @@ void criaPessoa()
 
     do
     {
-        Pessoa pessoa;
 
         // cadastra as pessoas
         cout << "digite o seu nome e ultimo sobrenome: ";
@@ -34,18 +41,17 @@ void criaPessoa()
         cout << endl;
         if (respostaDeposito == 's' || respostaDeposito == 'S')
         {
-            cout << "digite o valor do deposito: ";
-            cin >> pessoa.valor;
-            cout << endl;
+            realizaDeposito();
         }
         pessoas.push_back(pessoa); // coloca a pessoa no final do vetor
 
-        for (int i = 0; i < pessoas.size(); i++)
+        for (int i = 0; i < size(pessoas); i++)
         {
-            cout << "nome: " << pessoas[i].nome << " " << pessoas[i].sobrenome << endl;
+            cout << "nome: " << pessoas[i].nome << endl;
             cout << "valor: " << pessoas[i].valor << endl;
         }
-        cout << "Deseja cadastrar outra conta?[s/n]" << endl;
+
+        cout << "Deseja cadastrar uma conta?[s/n]" << endl;
         cin >> respostaCadastro;
         cout << endl;
     } while (respostaCadastro == 's' || respostaCadastro == 'S');
@@ -62,9 +68,9 @@ int main()
         cout << "9- Sair" << endl;
         cin >> escolha;
 
+        // DEIXAR 9 LIVRE PARA SER SAIDA
         switch (escolha)
         {
-            // DEIXAR 9 LIVRE PARA SER SAIDA
         case 1:
             criaPessoa();
             break;
