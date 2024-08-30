@@ -5,66 +5,29 @@
 
 using namespace std;
 
-struct Pessoa
+int realizaDeposito(double conta)
 {
-    string nome;
-    string sobrenome;
-    double valor;
-};
 
-vector<Pessoa> pessoas;
-Pessoa pessoa;
-
-void realizaDeposito()
-{
+    double deposito = 0, contaNovoValor;
     cout << "digite o valor do deposito: ";
-    cin >> pessoa.valor;
+    cin >> deposito;
     cout << endl;
+    contaNovoValor = conta + deposito;
+
+    return contaNovoValor;
 }
 
-void criaPessoa()
-{
-    char respostaCadastro, respostaDeposito;
-
-    cout << fixed << setprecision(2);
-
-    do
-    {
-
-        // cadastra as pessoas
-        cout << "digite o seu nome e ultimo sobrenome: ";
-        cin >> pessoa.nome >> pessoa.sobrenome;
-        cout << endl;
-
-        cout << "deseja realizar um deposito?[s/n]" << endl;
-        cin >> respostaDeposito;
-        cout << endl;
-        if (respostaDeposito == 's' || respostaDeposito == 'S')
-        {
-            realizaDeposito();
-        }
-        pessoas.push_back(pessoa); // coloca a pessoa no final do vetor
-
-        for (int i = 0; i < size(pessoas); i++)
-        {
-            cout << "nome: " << pessoas[i].nome << endl;
-            cout << "valor: " << pessoas[i].valor << endl;
-        }
-
-        cout << "Deseja cadastrar uma conta?[s/n]" << endl;
-        cin >> respostaCadastro;
-        cout << endl;
-    } while (respostaCadastro == 's' || respostaCadastro == 'S');
-}
 
 int main()
 {
+    cout << fixed << setprecision(2);
     int escolha;
+    double conta = 0;
 
     do
     {
         // IR ADICIONANDO AS ESCOLHAS DO MENU
-        cout << "1- criar conta" << endl;
+        cout << "1- realizar deposito" << endl;
         cout << "9- Sair" << endl;
         cin >> escolha;
 
@@ -72,8 +35,11 @@ int main()
         switch (escolha)
         {
         case 1:
-            criaPessoa();
+        {
+            double novoSaldo = realizaDeposito(conta);
+            conta = novoSaldo;
             break;
+        }
 
         default:
             break;
