@@ -17,7 +17,6 @@ int realizaDeposito(double conta)
     return contaNovoValor;
 }
 
-
 int main()
 {
     cout << fixed << setprecision(2);
