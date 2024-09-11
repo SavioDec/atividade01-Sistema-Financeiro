@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <vector>
+#include <list>
 #include <iomanip>
 
 using namespace std;
