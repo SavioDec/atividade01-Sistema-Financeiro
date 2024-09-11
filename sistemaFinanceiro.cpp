@@ -33,6 +33,7 @@ int main()
         // IR ADICIONANDO AS ESCOLHAS DO MENU
         cout << "1- realizar deposito" << endl;
         cout << "2- formas de investimentos"<< endl; 
+        cout << "3- Total"<< endl; 
         cout << "9- Sair" << endl;
         cin >> escolha;
 
@@ -54,7 +55,10 @@ int main()
 
             }
         }
-
+        case 3:
+        {
+            // total
+        }
         default:
             break;
         }
