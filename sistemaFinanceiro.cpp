@@ -16,6 +16,12 @@ int realizaDeposito(double conta)
     return contaNovoValor;
 }
 
+// int realizarInvestimento(int conta){
+//     int investir_no_banco = conta*1/3;
+//     int reservar_comida = (investir_no_banco - conta)*1/3;
+//     int reservar_energia = reservar_comid
+// }
+
 int main()
 {
     cout << fixed << setprecision(2);
@@ -26,6 +32,7 @@ int main()
     {
         // IR ADICIONANDO AS ESCOLHAS DO MENU
         cout << "1- realizar deposito" << endl;
+        cout << "2- formas de investimentos"<< endl; 
         cout << "9- Sair" << endl;
         cin >> escolha;
 
@@ -37,6 +44,15 @@ int main()
             double novoSaldo = realizaDeposito(conta);
             conta = novoSaldo;
             break;
+        }
+        case 2:
+        {
+            if(conta == 0){
+                cout<<"Antes de realizar os investimentos, adicione um valor inicial a sua conta"<< endl;
+            }
+            else{
+
+            }
         }
 
         default:
