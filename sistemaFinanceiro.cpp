@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <list>
 #include <iomanip>
 
 using namespace std;
