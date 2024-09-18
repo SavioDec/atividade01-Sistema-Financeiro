@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iomanip>
+#include <limits>
 
 using namespace std;
 struct Entrada
@@ -9,11 +10,17 @@ struct Entrada
     string tipo = "placeHolder";
     double valor = 0;
 };
+struct Investimento
+{
+    double poupanca = 0.0;
+    double despesa = 0.0;
+    double pessoal = 0.0;
+};
 vector<Entrada> entradas;
 int realizaDeposito(double conta)
 {
     Entrada entrada;
-    cin.sync();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     double contaNovoValor = 0;
     cout << "digite o tipo da entrada do deposito: ";
     getline(cin, entrada.tipo);
@@ -26,18 +33,16 @@ int realizaDeposito(double conta)
     return contaNovoValor;
 }
 
-struct Investimento {
-    double poupanca = 0.0;
-    double despesa = 0.0;
-    double pessoal = 0.0;
-};
-
-void realizaInvestimento(double valorInvestido, Investimento &investimento) {
+void realizaInvestimento(double valorInvestido, Investimento &investimento)
+{
     int opcao;
 
-    if (valorInvestido <= 0) {
+    if (valorInvestido <= 0)
+    {
         cout << "Antes de realizar os investimentos, adicione um valor maior que zero." << endl;
-    } else {
+    }
+    else
+    {
         cout << "\n1) - Primeiro modelo (Foco em Acumular Patrimonio):" << "\n";
         double poupanca = valorInvestido * 60 / 100;
         double despesa = valorInvestido * 30 / 100;
@@ -55,17 +60,21 @@ void realizaInvestimento(double valorInvestido, Investimento &investimento) {
         cout << "20% para investimentos e poupanca - " << poupanca2 << "\n";
         cout << "30% para despesas essencias - " << despesa2 << "\n";
         cout << "50% para estilo de vida - " << pessoal2 << "\n\n";
-
         cout << "Qual forma deseja aplicar seu patrimonio? (1 ou 2): ";
         cin >> opcao;
 
-        if (opcao != 1 && opcao != 2) {
+        if (opcao != 1 && opcao != 2)
+        {
             cout << "Escolha uma opcao valida.\n";
-        } else if (opcao == 1) {
+        }
+        else if (opcao == 1)
+        {
             investimento.poupanca += poupanca;
             investimento.despesa += despesa;
             investimento.pessoal += pessoal;
-        } else {
+        }
+        else
+        {
             investimento.poupanca += poupanca2;
             investimento.despesa += despesa2;
             investimento.pessoal += pessoal2;
@@ -85,7 +94,7 @@ int main()
     double valorInvestido;
     double conta = 0;
 
-    Investimento meuInvestimento;  // Definido fora do loop para acumular investimentos
+    Investimento meuInvestimento; // Definido fora do loop para acumular investimentos
     do
     {
         // IR ADICIONANDO AS ESCOLHAS DO MENU
@@ -101,16 +110,17 @@ int main()
         case 1:
         {
             double novoSaldo = realizaDeposito(conta);
-            cout << "Saldo atual: " << novoSaldo << "\n\n";
+            conta = novoSaldo;
+            cout << "Saldo atual: " << conta << "\n\n";
             break;
-            
         }
         case 2:
         {
             // Realizar investimento
             char continuar = 's';
 
-            while (continuar == 's' || continuar == 'S') {
+            while (continuar == 's' || continuar == 'S')
+            {
                 cout << "Quanto deseja investir?: ";
                 cin >> valorInvestido;
 
@@ -120,19 +130,37 @@ int main()
                 cin >> continuar;
             }
 
-            break;  // Adicionado o break para evitar cair no próximo case
+            break; // Adicionado o break para evitar cair no próximo case
         }
         case 3:
         {
-            // Exibir total de investimentos e saldo
-            cout << "Investimentos finais:\n";
-            cout << "Poupanca acumulada: " << meuInvestimento.poupanca << "\n";
-            cout << "Despesas acumuladas: " << meuInvestimento.despesa << "\n";
-            cout << "Estilo de vida acumulado: " << meuInvestimento.pessoal << "\n";
-            cout << "Saldo da conta: " << conta << "\n\n";
+            int resposta;
+            cout << endl;
+            cout << "qual total deseja visualizar?" << endl;
+            cout << "1-total de investimentos\n2-extrato da conta" << endl;
+            cin >> resposta;
+            cout<< endl;
+            if (resposta == 1)
+            {
+                // Exibir total de investimentos e saldo
+                cout << "Investimentos finais:\n";
+                cout << "Poupanca acumulada: " << meuInvestimento.poupanca << "\n";
+                cout << "Despesas acumuladas: " << meuInvestimento.despesa << "\n";
+                cout << "Estilo de vida acumulado: " << meuInvestimento.pessoal << "\n";
+            }
+            else if (resposta == 2)
+            {
+                for(const Entrada &entrada : entradas){
+                    cout << "tipo de entrada: " << entrada.tipo << endl;
+                    cout << "valor: " << entrada.valor << endl;
+                    cout<<"________" << endl;
+                }
+                cout << "valor total da conta: " << fixed << setprecision(2) << conta << endl;
+            }
             break;
         }
-        case 9: {
+        case 9:
+        {
             cout << "Saindo...\n";
             break;
         }
