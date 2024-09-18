@@ -1,3 +1,10 @@
+/*
+Savio Decaro - 842735
+Fabio Coral - 842538
+Eduardo Pacheco - 842421
+Rene Sant'Anna - 842640
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -5,10 +12,23 @@
 #include <limits>
 
 using namespace std;
+
 struct Entrada
 {
     string tipo = "placeHolder";
     double valor = 0;
+};
+
+struct Saida
+{
+    string tipo = "placeHolder";
+    double valor = 0;
+};
+
+struct Categoria
+{
+    string nome;
+    double orcamento;
 };
 struct Investimento
 {
@@ -16,23 +36,50 @@ struct Investimento
     double despesa = 0.0;
     double pessoal = 0.0;
 };
-vector<Entrada> entradas;
-int realizaDeposito(double conta)
+
+struct Financeiro
+{
+    vector<Entrada> entradas;
+    vector<Saida> saidas;
+    vector<Categoria> categorias;
+    double totalEntradas = 0;
+    double totalSaidas = 0;
+};
+
+void cadastrarEntrada(Financeiro &financeiro)
 {
     Entrada entrada;
+    cout << "Digite o tipo da entrada: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    double contaNovoValor = 0;
-    cout << "digite o tipo da entrada do deposito: ";
     getline(cin, entrada.tipo);
-    cout << "digite o valor do deposito: ";
+    cout << "Digite o valor da entrada: ";
     cin >> entrada.valor;
-    cout << endl;
-    contaNovoValor = conta + entrada.valor;
-    entradas.push_back(entrada);
-
-    return contaNovoValor;
+    financeiro.entradas.push_back(entrada);
+    financeiro.totalEntradas += entrada.valor;
 }
 
+void cadastrarSaida(Financeiro &financeiro)
+{
+    Saida saida;
+    cout << "Digite o tipo da saida: ";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, saida.tipo);
+    cout << "Digite o valor da saida: ";
+    cin >> saida.valor;
+    financeiro.saidas.push_back(saida);
+    financeiro.totalSaidas += saida.valor;
+}
+
+void cadastrarCategoria(Financeiro &financeiro)
+{
+    Categoria categoria;
+    cout << "Digite o nome da categoria: ";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, categoria.nome);
+    cout << "Digite o orçamento da categoria: ";
+    cin >> categoria.orcamento;
+    financeiro.categorias.push_back(categoria);
+}
 void realizaInvestimento(double valorInvestido, Investimento &investimento)
 {
     int opcao;
@@ -87,37 +134,74 @@ void realizaInvestimento(double valorInvestido, Investimento &investimento)
     }
 }
 
+void mostrarTotal(Financeiro financeiro, Entrada entrada, Saida saida)
+{
+    cout << "\n\nentradas: " << endl;
+    for (const Entrada &entrada : financeiro.entradas)
+    {
+        cout << entrada.tipo << ": " << entrada.valor << endl;
+    }
+    cout << "__________\n" << endl;
+    cout << "saidas: " << endl;
+    for (const Saida &saida : financeiro.saidas)
+    {
+        cout << saida.tipo << ": " << saida.valor << endl;
+    }
+    cout << "\nSaldo: " << financeiro.totalEntradas - financeiro.totalSaidas << endl;
+}
+
+void mostrarCategorias(Financeiro financeiro)
+{
+    cout << "\n\ncategorias:" << endl;
+    for (const Categoria &categoria : financeiro.categorias)
+    {
+        cout << "Nome: " << categoria.nome << ", Orçamento: " << categoria.orcamento << endl;
+    }
+}
+
 int main()
 {
     cout << fixed << setprecision(2);
     int escolha;
     double valorInvestido;
-    double conta = 0;
+    char continuar = 's';
+    Financeiro meuFinanceiro;
+    Entrada entrada;
+    Saida saida;
+    Investimento meuInvestimento;
 
-    Investimento meuInvestimento; // Definido fora do loop para acumular investimentos
     do
     {
-        // IR ADICIONANDO AS ESCOLHAS DO MENU
-        cout << "1- realizar deposito" << endl;
-        cout << "2- formas de investimentos" << endl;
-        cout << "3- Total" << endl;
+        cout << "\n1- Cadastrar entrada" << endl;
+        cout << "2- Cadastrar saida" << endl;
+        cout << "3- Cadastrar categoria" << endl;
+        cout << "4- Mostrar total" << endl;
+        cout << "5- Mostrar categorias" << endl;
+        cout << "6- investimentos" << endl;
+        cout << "7- total investimentos" << endl;
         cout << "9- Sair" << endl;
         cin >> escolha;
+        cout << endl;
 
-        // DEIXAR 9 LIVRE PARA SER SAIDA
         switch (escolha)
         {
         case 1:
-        {
-            double novoSaldo = realizaDeposito(conta);
-            conta = novoSaldo;
-            cout << "Saldo atual: " << conta << "\n\n";
+            cadastrarEntrada(meuFinanceiro);
             break;
-        }
         case 2:
-        {
+            cadastrarSaida(meuFinanceiro);
+            break;
+        case 3:
+            cadastrarCategoria(meuFinanceiro);
+            break;
+        case 4:
+            mostrarTotal(meuFinanceiro, entrada, saida);
+            break;
+        case 5:
+            mostrarCategorias(meuFinanceiro);
+            break;
+        case 6:
             // Realizar investimento
-            char continuar = 's';
 
             while (continuar == 's' || continuar == 'S')
             {
@@ -129,41 +213,22 @@ int main()
                 cout << "Deseja fazer outro investimento? (s/n): ";
                 cin >> continuar;
             }
+        case 7:
+        {
+            cout << "Investimentos finais:\n";
+            cout << "Poupanca acumulada: " << meuInvestimento.poupanca << "\n";
+            cout << "Despesas acumuladas: " << meuInvestimento.despesa << "\n";
+            cout << "Estilo de vida acumulado: " << meuInvestimento.pessoal << "\n";
+        }
 
-            break; // Adicionado o break para evitar cair no próximo case
-        }
-        case 3:
-        {
-            int resposta;
-            cout << endl;
-            cout << "qual total deseja visualizar?" << endl;
-            cout << "1-total de investimentos\n2-extrato da conta" << endl;
-            cin >> resposta;
-            cout<< endl;
-            if (resposta == 1)
-            {
-                // Exibir total de investimentos e saldo
-                cout << "Investimentos finais:\n";
-                cout << "Poupanca acumulada: " << meuInvestimento.poupanca << "\n";
-                cout << "Despesas acumuladas: " << meuInvestimento.despesa << "\n";
-                cout << "Estilo de vida acumulado: " << meuInvestimento.pessoal << "\n";
-            }
-            else if (resposta == 2)
-            {
-                for(const Entrada &entrada : entradas){
-                    cout << "tipo de entrada: " << entrada.tipo << endl;
-                    cout << "valor: " << entrada.valor << endl;
-                    cout<<"________" << endl;
-                }
-                cout << "valor total da conta: " << fixed << setprecision(2) << conta << endl;
-            }
-            break;
-        }
+        break;
         case 9:
-        {
-            cout << "Saindo...\n";
+            cout << "Saindo...\nFeito por:\n";
+            cout << "Savio Decaro - 842735" <<endl;
+            cout << "Fabio Coral - 842538" <<endl;
+            cout << "Eduardo Pacheco - 842421"<<endl;
+            cout << "Rene Sant'Anna - 842640"<<endl;
             break;
-        }
         default:
             cout << "Opção inválida, tente novamente.\n";
             break;
