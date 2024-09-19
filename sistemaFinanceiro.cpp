@@ -1,10 +1,3 @@
-/*
-Savio Decaro - 842735
-Fabio Coral - 842538
-Eduardo Pacheco - 842421
-Rene Sant'Anna - 842640
-*/
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -27,21 +20,23 @@ struct Saida
 
 struct Categoria
 {
-    string nome;
-    double orcamento;
-};
-struct Investimento
-{
-    double poupanca = 0.0;
-    double despesa = 0.0;
-    double pessoal = 0.0;
+    string nome = "placeHolder";
+    double teto = 0;
+    double orcamento = 0;
 };
 
+struct Investimento
+{
+    double poupancaAcumulada = 0.0;
+    double despesaAcumulada = 0.0;
+    double pessoalAcumulado = 0.0;
+};
 struct Financeiro
 {
     vector<Entrada> entradas;
     vector<Saida> saidas;
     vector<Categoria> categorias;
+    vector<Investimento> investimentos;
     double totalEntradas = 0;
     double totalSaidas = 0;
 };
@@ -60,6 +55,11 @@ void cadastrarEntrada(Financeiro &financeiro)
 
 void cadastrarSaida(Financeiro &financeiro)
 {
+    if (financeiro.totalEntradas - financeiro.totalSaidas <= 0)
+    {
+        cout << "Saldo insuficiente para realizar a saída." << endl;
+        return;
+    }
     Saida saida;
     cout << "Digite o tipo da saida: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -73,65 +73,80 @@ void cadastrarSaida(Financeiro &financeiro)
 void cadastrarCategoria(Financeiro &financeiro)
 {
     Categoria categoria;
+    if (financeiro.totalEntradas - financeiro.totalSaidas <= 0)
+    {
+        cout << "Saldo insuficiente para realizar o cadastro de categoria." << endl;
+        return;
+    }
+
     cout << "Digite o nome da categoria: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, categoria.nome);
-    cout << "Digite o orçamento da categoria: ";
+    cout << "Digite o teto da categoria: ";
+    cin >> categoria.teto;
+    cout << "Digite quanto sera gasto nessa categoria: ";
     cin >> categoria.orcamento;
-    financeiro.categorias.push_back(categoria);
+    if(categoria.orcamento <= categoria.teto){
+        financeiro.totalEntradas -= categoria.orcamento;
+        financeiro.categorias.push_back(categoria);
+    }else{
+        cout << "O orcamento da categoria nao pode ser maior que o teto." << endl;
+    }
 }
-void realizaInvestimento(double valorInvestido, Investimento &investimento)
-{
-    int opcao;
 
-    if (valorInvestido <= 0)
+void realizaInvestimento(double valorInvestido, Investimento &investimento, Financeiro &financeiro)
+{
+
+    if (financeiro.totalEntradas - financeiro.totalSaidas <= 0)
     {
-        cout << "Antes de realizar os investimentos, adicione um valor maior que zero." << endl;
+        cout << "Você não tem saldo suficiente para realizar investimentos." << endl;
+        return;
+    }
+    else if (valorInvestido > financeiro.totalEntradas - financeiro.totalSaidas)
+    {
+        cout << "Você não tem saldo suficiente para realizar esse investimento." << endl;
+        return;
+    }
+    int opcao;
+    cout << "\n1) - Primeiro modelo (Foco em Acumular Patrimonio):" << "\n";
+    double poupanca = valorInvestido * 60 / 100;
+    double despesa = valorInvestido * 30 / 100;
+    double pessoal = valorInvestido * 10 / 100;
+
+    cout << "60% para investimentos e poupanca - " << poupanca << "\n";
+    cout << "30% para despesas essencias - " << despesa << "\n";
+    cout << "10% para estilo de vida - " << pessoal << "\n\n";
+
+    cout << "2) - Segundo modelo (Foco em aproveitar a vida):" << "\n";
+    double poupanca2 = valorInvestido * 20 / 100;
+    double despesa2 = valorInvestido * 30 / 100;
+    double pessoal2 = valorInvestido * 50 / 100;
+
+    cout << "20% para investimentos e poupanca - " << poupanca2 << "\n";
+    cout << "30% para despesas essencias - " << despesa2 << "\n";
+    cout << "50% para estilo de vida - " << pessoal2 << "\n\n";
+    cout << "Qual forma deseja aplicar seu patrimonio? (1 ou 2): ";
+    cin >> opcao;
+
+    if (opcao != 1 && opcao != 2)
+    {
+        cout << "Escolha uma opcao valida.\n";
+    }
+    else if (opcao == 1)
+    {
+        investimento.poupancaAcumulada += poupanca;
+        investimento.despesaAcumulada += despesa;
+        investimento.pessoalAcumulado += pessoal;
     }
     else
     {
-        cout << "\n1) - Primeiro modelo (Foco em Acumular Patrimonio):" << "\n";
-        double poupanca = valorInvestido * 60 / 100;
-        double despesa = valorInvestido * 30 / 100;
-        double pessoal = valorInvestido * 10 / 100;
-
-        cout << "60% para investimentos e poupanca - " << poupanca << "\n";
-        cout << "30% para despesas essencias - " << despesa << "\n";
-        cout << "10% para estilo de vida - " << pessoal << "\n\n";
-
-        cout << "2) - Segundo modelo (Foco em aproveitar a vida):" << "\n";
-        double poupanca2 = valorInvestido * 20 / 100;
-        double despesa2 = valorInvestido * 30 / 100;
-        double pessoal2 = valorInvestido * 50 / 100;
-
-        cout << "20% para investimentos e poupanca - " << poupanca2 << "\n";
-        cout << "30% para despesas essencias - " << despesa2 << "\n";
-        cout << "50% para estilo de vida - " << pessoal2 << "\n\n";
-        cout << "Qual forma deseja aplicar seu patrimonio? (1 ou 2): ";
-        cin >> opcao;
-
-        if (opcao != 1 && opcao != 2)
-        {
-            cout << "Escolha uma opcao valida.\n";
-        }
-        else if (opcao == 1)
-        {
-            investimento.poupanca += poupanca;
-            investimento.despesa += despesa;
-            investimento.pessoal += pessoal;
-        }
-        else
-        {
-            investimento.poupanca += poupanca2;
-            investimento.despesa += despesa2;
-            investimento.pessoal += pessoal2;
-        }
-
-        cout << "Realizado com sucesso.\n";
-        cout << "Investimento em poupanca: " << investimento.poupanca << "\n";
-        cout << "Despesas: " << investimento.despesa << "\n";
-        cout << "Estilo de vida: " << investimento.pessoal << "\n\n";
+        investimento.poupancaAcumulada += poupanca2;
+        investimento.despesaAcumulada += despesa2;
+        investimento.pessoalAcumulado += pessoal2;
     }
+    financeiro.investimentos.push_back(investimento);
+    // Subtrair o valor investido do totalEntradas
+    financeiro.totalEntradas -= valorInvestido;
 }
 
 void mostrarTotal(Financeiro financeiro, Entrada entrada, Saida saida)
@@ -141,7 +156,8 @@ void mostrarTotal(Financeiro financeiro, Entrada entrada, Saida saida)
     {
         cout << entrada.tipo << ": " << entrada.valor << endl;
     }
-    cout << "__________\n" << endl;
+    cout << "__________\n"
+         << endl;
     cout << "saidas: " << endl;
     for (const Saida &saida : financeiro.saidas)
     {
@@ -202,32 +218,30 @@ int main()
             break;
         case 6:
             // Realizar investimento
+            cout << "Quanto deseja investir?: ";
+            cin >> valorInvestido;
 
-            while (continuar == 's' || continuar == 'S')
-            {
-                cout << "Quanto deseja investir?: ";
-                cin >> valorInvestido;
-
-                realizaInvestimento(valorInvestido, meuInvestimento);
-
-                cout << "Deseja fazer outro investimento? (s/n): ";
-                cin >> continuar;
-            }
+            realizaInvestimento(valorInvestido, meuInvestimento, meuFinanceiro);
+            break;
         case 7:
         {
-            cout << "Investimentos finais:\n";
-            cout << "Poupanca acumulada: " << meuInvestimento.poupanca << "\n";
-            cout << "Despesas acumuladas: " << meuInvestimento.despesa << "\n";
-            cout << "Estilo de vida acumulado: " << meuInvestimento.pessoal << "\n";
+            cout << "_______" << endl;
+            for (const Investimento &Investimento : meuFinanceiro.investimentos)
+            {
+                cout << "Investimentos finais:\n";
+                cout << "Poupanca acumulada: " << Investimento.poupancaAcumulada << "\n";
+                cout << "Despesas acumuladas: " << Investimento.despesaAcumulada << "\n";
+                cout << "Estilo de vida acumulado: " << Investimento.pessoalAcumulado << "\n";
+            }
         }
 
         break;
         case 9:
             cout << "Saindo...\nFeito por:\n";
-            cout << "Savio Decaro - 842735" <<endl;
-            cout << "Fabio Coral - 842538" <<endl;
-            cout << "Eduardo Pacheco - 842421"<<endl;
-            cout << "Rene Sant'Anna - 842640"<<endl;
+            cout << "Savio Decaro - 842735" << endl;
+            cout << "Fabio Coral - 842538" << endl;
+            cout << "Eduardo Pacheco - 842421" << endl;
+            cout << "Rene Sant'Anna - 842640" << endl;
             break;
         default:
             cout << "Opção inválida, tente novamente.\n";
