@@ -44,7 +44,7 @@ struct Financeiro
 void cadastrarEntrada(Financeiro &financeiro)
 {
     Entrada entrada;
-    cout << "Digite o tipo da entrada: ";
+    cout << "Digite o tipo da entrada[Ex: job, empresa, etc...]: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, entrada.tipo);
     cout << "Digite o valor da entrada: ";
@@ -61,7 +61,7 @@ void cadastrarSaida(Financeiro &financeiro)
         return;
     }
     Saida saida;
-    cout << "Digite o tipo da saida: ";
+    cout << "Digite o tipo da saida[Ex: Cinema, aluguel, etc...]: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, saida.tipo);
     cout << "Digite o valor da saida: ";
@@ -244,7 +244,7 @@ int main()
             cout << "Rene Sant'Anna - 842640" << endl;
             break;
         default:
-            cout << "Opção inválida, tente novamente.\n";
+            cout << "Opção invalida, tente novamente.\n";
             break;
         }
     } while (escolha != 9);
