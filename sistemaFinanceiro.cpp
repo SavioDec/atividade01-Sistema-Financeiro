@@ -171,7 +171,7 @@ void mostrarCategorias(Financeiro financeiro)
     cout << "\n\ncategorias:" << endl;
     for (const Categoria &categoria : financeiro.categorias)
     {
-        cout << "Nome: " << categoria.nome << ", Orçamento: " << categoria.orcamento << endl;
+        cout << "Nome: " << categoria.nome << ",teto: " << categoria.teto <<" ,Orçamento: " << categoria.orcamento << endl;
     }
 }
 
