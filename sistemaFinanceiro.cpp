@@ -79,7 +79,7 @@ void cadastrarCategoria(Financeiro &financeiro)
         return;
     }
 
-    cout << "Digite o nome da categoria: ";
+    cout << "Digite o nome da categoria [Ex: Lazer, estudo, deslocamento, etc...]: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, categoria.nome);
     cout << "Digite o teto da categoria: ";
@@ -211,13 +211,26 @@ int main()
             cadastrarCategoria(meuFinanceiro);
             break;
         case 4:
+            cout << "_______"<< endl;
             mostrarTotal(meuFinanceiro, entrada, saida);
+            cout << "_______"<< endl;
+            mostrarCategorias(meuFinanceiro);
+            cout << "_______"<< endl;
+            for (const Investimento &Investimento : meuFinanceiro.investimentos)
+            {
+                cout << "Investimentos finais:\n";
+                cout << "Poupanca acumulada: " << Investimento.poupancaAcumulada << "\n";
+                cout << "Despesas acumuladas: " << Investimento.despesaAcumulada << "\n";
+                cout << "Estilo de vida acumulado: " << Investimento.pessoalAcumulado << "\n";
+            }
+            cout << "_______"<< endl;
             break;
         case 5:
             mostrarCategorias(meuFinanceiro);
             break;
         case 6:
             // Realizar investimento
+            cout << "\nSaldo: " << meuFinanceiro.totalEntradas - meuFinanceiro.totalSaidas << endl;
             cout << "Quanto deseja investir?: ";
             cin >> valorInvestido;
 
